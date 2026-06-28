@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: transparent; width: 520px; height: 120px; overflow: hidden; }
+
+  .wrap {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%;
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  .wrap.show {
+    animation: in 0.4s cubic-bezier(0.22,1,0.36,1) forwards,
+               out 0.4s cubic-bezier(0.22,1,0.36,1) 6s forwards;
+  }
+  @keyframes in  { to { transform: translateY(0); opacity: 1; } }
+  @keyframes out { to { transform: translateY(110%); opacity: 0; } }
+
+  .box {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: rgba(0,15,8,0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-left: 3px solid #FB3640;
+    padding: 18px 24px;
+  }
+
+  .info { flex: 1; }
+
+  .label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: #FB3640;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  .msg {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 320px;
+  }
+
+  .amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    color: #FB3640;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="w">
+  <div class="box">
+    <div class="info">
+      <span class="label">Nova doação</span>
+      <div class="name" id="name">StreamerFã123</div>
+      <div class="msg" id="msg">Conteúdo incrível, continue assim!</div>
+    </div>
+    <div class="amount" id="amt">R$50</div>
+  </div>
+</div>
+<script>
+  const q = []; let busy = false;
+  function show(name, amt, msg) { q.push({name,amt,msg}); if(!busy) next(); }
+  function next() {
+    if(!q.length){busy=false;return;} busy=true;
+    const {name,amt,msg} = q.shift();
+    document.getElementById('name').textContent = name;
+    document.getElementById('amt').textContent  = amt;
+    document.getElementById('msg').textContent  = msg||'';
+    const w = document.getElementById('w');
+    w.classList.remove('show'); void w.offsetWidth; w.classList.add('show');
+    setTimeout(()=>{ w.classList.remove('show'); setTimeout(next,500); },6500);
+  }
+  window.addEventListener('message',e=>{
+    try{
+      const d=typeof e.data==='string'?JSON.parse(e.data):e.data;
+      if(d?.type==='donation'||d?.event==='donation'){
+        const name=d.data?.username||d.username||'Anônimo';
+        const cents=d.data?.amount||d.amount||0;
+        const val='R$'+(cents/100).toFixed(0);
+        show(name,val,d.data?.message||d.message||'');
+      }
+    }catch{}
+  });
+  setTimeout(()=>show('StreamerFã123','R$50','Conteúdo incrível, continue assim!'),1000);
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: transparent; width: 300px; overflow: hidden; }
+
+  .box {
+    background: rgba(0,15,8,0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-left: 3px solid #FB3640;
+    padding: 14px 0;
+    width: 100%;
+  }
+
+  .header {
+    padding: 0 20px 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: #FB3640;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    padding: 9px 20px;
+    gap: 14px;
+  }
+
+  .pos {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: rgba(255,255,255,0.2);
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .item:nth-child(1) .pos { color: #FB3640; }
+  .item:nth-child(2) .pos { color: rgba(251,54,64,0.55); }
+  .item:nth-child(3) .pos { color: rgba(251,54,64,0.3); }
+
+  .name {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .amt {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: rgba(255,255,255,0.6);
+    flex-shrink: 0;
+  }
+  .item:nth-child(1) .amt { color: #FB3640; }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="header">Top doadores</div>
+  <div id="list"></div>
+</div>
+<script>
+  const demo=[
+    {name:'StreamerFã123',amount:25000},
+    {name:'PoderosaX',amount:15000},
+    {name:'MáquinaDoMal',amount:10000},
+    {name:'TopDoador99',amount:7500},
+    {name:'ApoiadorFiel',amount:5000},
+    {name:'FãNúmero1',amount:3000},
+    {name:'Contribuidor42',amount:1500},
+  ];
+  function fmt(c){return'R$'+(c/100).toFixed(0);}
+  function render(data){
+    document.getElementById('list').innerHTML=data.slice(0,7).map((d,i)=>`
+      <div class="item">
+        <span class="pos">${i+1}</span>
+        <span class="name">${d.name}</span>
+        <span class="amt">${fmt(d.amount)}</span>
+      </div>`).join('');
+  }
+  render(demo);
+  window.addEventListener('message',e=>{
+    try{
+      const d=typeof e.data==='string'?JSON.parse(e.data):e.data;
+      if(d?.type==='ranking'||d?.event==='ranking') render(d.data||[]);
+    }catch{}
+  });
+</script>
+</body>
+</html>
