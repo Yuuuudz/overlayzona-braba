@@ -30,7 +30,6 @@
     flex-shrink: 0;
   }
 
-  /* janela que mostra só o QR — sem overflow */
   .qr-window {
     width: 150px;
     height: 150px;
@@ -41,24 +40,14 @@
     background: #fff;
   }
 
-  /*
-    O widget nativo tem ~130px de largura total.
-    Estrutura interna aproximada:
-      header (texto livepix.gg): ~22px
-      qr code:                   ~90px
-      footer (envie mensagem):   ~30px
-    
-    Escala o iframe pra 150/130 ≈ 1.15 e corta o header/footer
-  */
+  /* iframe no tamanho real do widget, só deslocado pra cortar header/footer */
   .qr-window iframe {
     position: absolute;
-    width: 130px;
-    height: 160px;
+    width: 150px;
+    height: 220px;
     border: none;
-    transform: scale(1.18);
-    transform-origin: top left;
-    top: -26px;   /* esconde o header */
-    left: 0px;
+    top: -22px;  /* sobe pra esconder "livepix.gg/yuuuudz" */
+    left: 0;
   }
 
   .title {
@@ -73,7 +62,7 @@
 </head>
 <body>
 <div class="box">
-  <span class="label">Faz a boa ai mano</span>
+  <span class="label">Doe agora</span>
   <div class="qr-window">
     <iframe src="https://widget.livepix.gg/embed/c0e2f015-d6e4-422b-bd4d-f704a87344e0" scrolling="no"></iframe>
   </div>
