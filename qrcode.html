@@ -30,26 +30,35 @@
     flex-shrink: 0;
   }
 
-  /* janela que mostra só o QR */
+  /* janela que mostra só o QR — sem overflow */
   .qr-window {
     width: 150px;
     height: 150px;
-    background: #fff;
     border-radius: 4px;
     overflow: hidden;
     flex-shrink: 0;
     position: relative;
+    background: #fff;
   }
 
-  /* iframe grande, empurrado pra cima pra esconder o header do livepix */
+  /*
+    O widget nativo tem ~130px de largura total.
+    Estrutura interna aproximada:
+      header (texto livepix.gg): ~22px
+      qr code:                   ~90px
+      footer (envie mensagem):   ~30px
+    
+    Escala o iframe pra 150/130 ≈ 1.15 e corta o header/footer
+  */
   .qr-window iframe {
     position: absolute;
-    width: 320px;
-    height: 320px;
+    width: 130px;
+    height: 160px;
     border: none;
-    /* ajuste top/left pra centralizar só o QR code */
-    top: -68px;
-    left: -82px;
+    transform: scale(1.18);
+    transform-origin: top left;
+    top: -26px;   /* esconde o header */
+    left: 0px;
   }
 
   .title {
