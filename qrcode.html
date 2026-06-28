@@ -5,7 +5,7 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: transparent; width: 190px; height: 230px; overflow: hidden; }
+  body { background: transparent; width: 220px; height: 270px; overflow: hidden; }
 
   .box {
     background: rgba(0,15,8,0.75);
@@ -30,14 +30,25 @@
   }
 
   .qr {
-    width: 140px;
-    height: 140px;
+    width: 180px;
+    height: 180px;
     background: #fff;
     border-radius: 4px;
     overflow: hidden;
     flex-shrink: 0;
+    position: relative;
   }
-  .qr iframe { width: 140px; height: 140px; border: none; }
+
+  .qr iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    border: none;
+    transform: translate(-50%, -50%) scale(0.6);
+    transform-origin: center;
+  }
 
   .title {
     font-family: 'Bebas Neue', sans-serif;
